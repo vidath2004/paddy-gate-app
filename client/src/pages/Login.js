@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { login, reset } from '../redux/slices/authSlice';
 import Spinner from '../components/Spinner';
+import AnimatedCard from '../components/AnimatedCard';
 
 const Login = () => {
   const [formData, setFormData] = useState({

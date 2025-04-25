@@ -15,6 +15,19 @@ import NotFound from './pages/NotFound';
 // Components
 import Header from './components/Header';
 import Footer from './components/Footer';
+<ToastContainer
+  position="top-right"
+  autoClose={3000}
+  hideProgressBar={false}
+  newestOnTop
+  closeOnClick
+  rtl={false}
+  pauseOnFocusLoss
+  draggable
+  pauseOnHover
+  theme="light"
+  toastClassName="bg-white shadow-lg rounded-lg overflow-hidden border-l-4 border-primary-500"
+/>
 
 function App() {
   return (

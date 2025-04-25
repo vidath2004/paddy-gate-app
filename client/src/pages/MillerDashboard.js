@@ -15,6 +15,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
+import AnimatedCard from '../components/AnimatedCard';
 
 // Register ChartJS components
 ChartJS.register(
@@ -317,11 +318,31 @@ const MillerDashboard = () => {
                   required
                 >
                   <option value="">Select District</option>
-                  <option value="Colombo">Colombo</option>
-                  <option value="Gampaha">Gampaha</option>
-                  <option value="Kandy">Kandy</option>
+                  <option value="Ampara">Ampara</option>
                   <option value="Anuradhapura">Anuradhapura</option>
+                  <option value="Badulla">Badulla</option>
+                  <option value="Batticaloa">Batticaloa</option>
+                  <option value="Colombo">Colombo</option>
+                  <option value="Galle">Galle</option>
+                  <option value="Gampaha">Gampaha</option>
+                  <option value="Hambantota">Hambantota</option>
+                  <option value="Jaffna">Jaffna</option>
+                  <option value="Kalutara">Kalutara</option>
+                  <option value="Kandy">Kandy</option>
+                  <option value="Kegalle">Kegalle</option>
+                  <option value="Kilinochchi">Kilinochchi</option>
+                  <option value="Kurunegala">Kurunegala</option>
+                  <option value="Mannar">Mannar</option>
+                  <option value="Matale">Matale</option>
+                  <option value="Matara">Matara</option>
+                  <option value="Monaragala">Monaragala</option>
+                  <option value="Mullaitivu">Mullaitivu</option>
+                  <option value="Nuwara Eliya">Nuwara Eliya</option>
                   <option value="Polonnaruwa">Polonnaruwa</option>
+                  <option value="Puttalam">Puttalam</option>
+                  <option value="Ratnapura">Ratnapura</option>
+                  <option value="Trincomalee">Trincomalee</option>
+                  <option value="Vavuniya">Vavuniya</option>
                   {/* Add more districts */}
                 </select>
               </div>
@@ -384,10 +405,11 @@ const MillerDashboard = () => {
                   multiple
                   required
                 >
-                  <option value="Basmati">Basmati</option>
-                  <option value="Red Rice">Red Rice</option>
-                  <option value="White Rice">White Rice</option>
-                  <option value="Brown Rice">Brown Rice</option>
+                   <option value="Keeri Samba">Keeri Samba</option>
+                  <option value="Samba">Samba</option>
+                  <option value="Suwandel">Suwandel</option>
+                  <option value="Naadu">Naadu</option>
+                  <option value="Bola Samba">Bola Samba</option>
                 </select>
                 <small className="text-gray-500">Hold Ctrl (or Cmd) to select multiple</small>
               </div>
