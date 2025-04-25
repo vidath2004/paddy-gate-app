@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5001/api/mills';
+const API_URL = 'http://localhost:5000/api/mills';
 
 const initialState = {
   mills: [],

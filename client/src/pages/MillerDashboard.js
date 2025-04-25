@@ -15,7 +15,6 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
-import AnimatedCard from '../components/AnimatedCard';
 
 // Register ChartJS components
 ChartJS.register(
@@ -150,6 +149,11 @@ const MillerDashboard = () => {
 
     const mill = millerMills.find(m => m._id === priceFormData.millId);
     
+    if (!mill) {
+      toast.error('Selected mill not found');
+      return;
+    }
+    
     dispatch(updatePrice({
       millId: priceFormData.millId,
       riceVariety: priceFormData.riceVariety,
@@ -201,18 +205,30 @@ const MillerDashboard = () => {
 
   // View price history
   const viewPriceHistory = (price) => {
+    const millId = price.millId?._id || price.millId;
+    if (!millId) {
+      toast.error('Mill ID not found for this price');
+      return;
+    }
+    
     dispatch(getPriceHistory({
-      millId: price.millId._id || price.millId,
+      millId: millId,
       riceVariety: price.riceVariety
     }));
     setSelectedPrice(price);
     setShowPriceHistory(true);
   };
 
-  // Filter prices for miller's mills
-  const millerPrices = prices.filter(price => 
-    millerMills.some(mill => mill._id === (price.millId._id || price.millId))
-  );
+  // Filter prices for miller's mills - with null checks
+  const millerPrices = prices.filter(price => {
+    if (!price || !price.millId) return false;
+    
+    const priceMillId = price.millId._id || price.millId;
+    
+    return millerMills.some(mill => {
+      return mill && mill._id && mill._id === priceMillId;
+    });
+  });
 
   // Prepare data for the price history chart
   const chartData = {
@@ -251,10 +267,10 @@ const MillerDashboard = () => {
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="bg-white rounded-lg shadow-md p-6">
-          <h2 className="text-xl font-semibold mb-4">Welcome, {user.profile.name}</h2>
+          <h2 className="text-xl font-semibold mb-4">Welcome, {user?.profile?.name || 'Miller'}</h2>
           <div className="text-gray-600">
-            <p><span className="font-medium">District:</span> {user.profile.location.district}</p>
-            <p><span className="font-medium">Contact:</span> {user.profile.contact.phone}</p>
+            <p><span className="font-medium">District:</span> {user?.profile?.location?.district || 'N/A'}</p>
+            <p><span className="font-medium">Contact:</span> {user?.profile?.contact?.phone || 'N/A'}</p>
           </div>
         </div>
         
@@ -276,7 +292,7 @@ const MillerDashboard = () => {
                 resetPriceForm();
                 setShowPriceForm(true);
               }}
-              disabled={millerMills.length === 0}
+              disabled={!millerMills || millerMills.length === 0}
             >
               Update Rice Prices
             </button>
@@ -329,6 +345,7 @@ const MillerDashboard = () => {
                   <option value="Jaffna">Jaffna</option>
                   <option value="Kalutara">Kalutara</option>
                   <option value="Kandy">Kandy</option>
+                  <option value="Anuradhapura">Anuradhapura</option>
                   <option value="Kegalle">Kegalle</option>
                   <option value="Kilinochchi">Kilinochchi</option>
                   <option value="Kurunegala">Kurunegala</option>
@@ -405,11 +422,10 @@ const MillerDashboard = () => {
                   multiple
                   required
                 >
-                   <option value="Keeri Samba">Keeri Samba</option>
-                  <option value="Samba">Samba</option>
-                  <option value="Suwandel">Suwandel</option>
-                  <option value="Naadu">Naadu</option>
-                  <option value="Bola Samba">Bola Samba</option>
+                <option value="Basmati">Basmati</option>
+                <option value="Red Rice">Red Rice</option>
+                <option value="White Rice">White Rice</option>
+                <option value="Brown Rice">Brown Rice</option>
                 </select>
                 <small className="text-gray-500">Hold Ctrl (or Cmd) to select multiple</small>
               </div>
@@ -455,7 +471,7 @@ const MillerDashboard = () => {
                   required
                 >
                   <option value="">Select Mill</option>
-                  {millerMills.map(mill => (
+                  {millerMills && millerMills.map(mill => (
                     <option key={mill._id} value={mill._id}>
                       {mill.name}
                     </option>
@@ -476,7 +492,7 @@ const MillerDashboard = () => {
                   required
                 >
                   <option value="">Select Rice Variety</option>
-                  {priceFormData.millId && millerMills.find(m => m._id === priceFormData.millId)?.specializations.map(variety => (
+                  {priceFormData.millId && millerMills && millerMills.find(m => m._id === priceFormData.millId)?.specializations?.map(variety => (
                     <option key={variety} value={variety}>
                       {variety}
                     </option>
@@ -540,7 +556,7 @@ const MillerDashboard = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <div>
           <h2 className="text-2xl font-semibold mb-4">Your Mills</h2>
-          {millerMills.length === 0 ? (
+          {!millerMills || millerMills.length === 0 ? (
             <div className="bg-white rounded-lg shadow-md p-6 text-center text-gray-600">
               You haven't added any mills yet. Add your first mill to start posting prices.
             </div>
@@ -552,9 +568,9 @@ const MillerDashboard = () => {
                     <div className="flex justify-between">
                       <div>
                         <h3 className="text-lg font-semibold">{mill.name}</h3>
-                        <p className="text-sm text-gray-600">{mill.location.district}</p>
+                        <p className="text-sm text-gray-600">{mill.location?.district || 'N/A'}</p>
                         <p className="text-sm text-gray-600 mt-1">
-                          Specializations: {mill.specializations.join(', ')}
+                          Specializations: {mill.specializations?.join(', ') || 'None'}
                         </p>
                       </div>
                       <div>
@@ -569,7 +585,7 @@ const MillerDashboard = () => {
                     <div className="mt-2">
                       <p className="text-xs text-gray-500">
                         Status: <span className={`font-medium ${mill.verificationStatus === 'Verified' ? 'text-green-600' : 'text-yellow-600'}`}>
-                          {mill.verificationStatus}
+                          {mill.verificationStatus || 'Pending'}
                         </span>
                       </p>
                     </div>
@@ -582,7 +598,7 @@ const MillerDashboard = () => {
         
         <div>
           <h2 className="text-2xl font-semibold mb-4">Your Current Prices</h2>
-          {millerPrices.length === 0 ? (
+          {!millerPrices || millerPrices.length === 0 ? (
             <div className="bg-white rounded-lg shadow-md p-6 text-center text-gray-600">
               You haven't posted any prices yet. Update prices to attract farmers.
             </div>
@@ -594,13 +610,13 @@ const MillerDashboard = () => {
                     <div className="flex justify-between">
                       <div>
                         <h3 className="text-lg font-semibold">
-                          {price.riceVariety} - Rs. {price.pricePerKg.toFixed(2)}/kg
+                          {price.riceVariety} - Rs. {price.pricePerKg?.toFixed(2) || '0.00'}/kg
                         </h3>
                         <p className="text-sm text-gray-600">
-                          Mill: {price.millId.name || millerMills.find(m => m._id === price.millId)?.name}
+                          Mill: {price.millId?.name || (millerMills && millerMills.find(m => m._id === price.millId)?.name) || 'Unknown'}
                         </p>
                         <p className="text-xs text-gray-500 mt-1">
-                          Last Updated: {new Date(price.updateTimestamp).toLocaleString()}
+                          Last Updated: {price.updateTimestamp ? new Date(price.updateTimestamp).toLocaleString() : 'Unknown'}
                         </p>
                       </div>
                       <div className="flex items-center">

@@ -183,12 +183,10 @@ const FarmerDashboard = () => {
                 value={filters.riceVariety}
                 onChange={handleFilterChange}
               >
-              <option value="Basmati">Basmati</option>
-                  <option value="Keeri Samba">Keeri Samba</option>
-                  <option value="Samba">Samba</option>
-                  <option value="Suwandel">Suwandel</option>
-                  <option value="Naadu">Naadu</option>
-                  <option value="Bola Samba">Bola Samba</option>
+                <option value="Basmati">Basmati</option>
+                <option value="Red Rice">Red Rice</option>
+                <option value="White Rice">White Rice</option>
+                <option value="Brown Rice">Brown Rice</option>
               </select>
             </div>
             <div className="flex items-end gap-2">
