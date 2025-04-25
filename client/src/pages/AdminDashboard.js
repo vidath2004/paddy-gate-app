@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import { getUsers, updateUserStatus, getAllMills, verifyMill } from '../redux/slices/userSlice';
 import Spinner from '../components/Spinner';
+import AnimatedCard from '../components/AnimatedCard';
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('users');
