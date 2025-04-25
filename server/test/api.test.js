@@ -70,7 +70,7 @@ describe('Mills API', () => {
           phone: '1234567890',
           email: 'mill@example.com'
         },
-        specializations: ['Basmati', 'White Rice']
+        specializations: ['Basmati', 'Samba']
       });
     
     expect(res.statusCode).toEqual(201);

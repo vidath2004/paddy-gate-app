@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import { emitPriceUpdate } from '../../socket';
 
-const API_URL = 'http://localhost:5001/api/prices';
+const API_URL = 'http://localhost:5000/api/prices';
 
 const initialState = {
   prices: [],
